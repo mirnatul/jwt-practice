@@ -3,8 +3,7 @@ import React from 'react';
 const Home = () => {
     return (
         <div>
-            this is home
-            <button className='btn btn-primary'>Test button</button>
+            <h1 className='text-5xl text-center my-10'>Home Page</h1>
         </div>
     );
 };
