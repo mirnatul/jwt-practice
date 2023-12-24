@@ -11,24 +11,24 @@ app.use(cors());
 app.use(express.json());
 
 
-const verifyJWT = (req, res, next) => {
-    const authorization = req.headers.authorization;
-    // console.log(req.headers);
+// const verifyJWT = (req, res, next) => {
+//     const authorization = req.headers.authorization;
+//     // console.log(req.headers);
 
-    if (!authorization) {
-        console.log('inside if block ', req.headers);
-        return res.status(401).send({ error: true, message: 'unauthorized access from !authorization' });
-    }
-    const token = authorization.split(' ')[1]; //Bearer <token>
+//     if (!authorization) {
+//         console.log('inside if block ', req.headers);
+//         return res.status(401).send({ error: true, message: 'unauthorized access from !authorization' });
+//     }
+//     const token = authorization.split(' ')[1]; //Bearer <token>
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(403).send({ error: true, message: 'unauthorized access from jwt.verify' });
-        }
-        req.decoded = decoded;
-        next();
-    })
-}
+//     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+//         if (err) {
+//             return res.status(403).send({ error: true, message: 'unauthorized access from jwt.verify' });
+//         }
+//         req.decoded = decoded;
+//         next();
+//     })
+// }
 
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -57,9 +57,11 @@ async function run() {
         // jwt
         app.post('/jwt', (req, res) => {
             const user = req.body;
+            console.log(user);
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn: 10000
+                expiresIn: 10
             });
+            console.log(token);
             res.send({ token });
         })
 
@@ -103,7 +105,7 @@ async function run() {
 
         // cart api
 
-        app.get('/carts', verifyJWT, async (req, res) => {
+        app.get('/carts', async (req, res) => {
             const email = req.query.email;
             // console.log(email);
             if (!email) {

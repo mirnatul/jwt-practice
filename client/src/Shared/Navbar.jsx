@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../provider/AuthProvider';
 
 const Navbar = () => {
+
+    const { user, logOut } = useContext(AuthContext)
+
+    const handleLogOut = () => {
+        logOut()
+            .then(() => {
+
+            })
+            .catch(error => console.log(error))
+    }
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
@@ -13,6 +24,7 @@ const Navbar = () => {
                         <li><Link to='/'>Home</Link></li>
                         <li><Link to='/login'>Login</Link></li>
                         <li><Link to='/register'>Register</Link></li>
+                        <li><a onClick={handleLogOut}>Log out</a></li>
                     </ul>
                 </div>
                 <a className="btn btn-ghost text-xl">Test JWT</a>
@@ -22,14 +34,11 @@ const Navbar = () => {
                     <li><Link to='/'>Home</Link></li>
                     <li><Link to='/login'>Login</Link></li>
                     <li><Link to='/register'>Register</Link></li>
+                    <li><a onClick={handleLogOut}>Log out</a></li>
                 </ul>
             </div>
             <div className="navbar-end">
-                <div className="avatar">
-                    <div className="w-20 rounded">
-                        <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-                    </div>
-                </div>
+                {user?.email}
             </div>
         </div>
     );
